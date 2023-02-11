@@ -2,7 +2,10 @@ import React from "react";
 import {
   changeInputValue,
   changeSelect,
+  changeUserData,
   deleteCard,
+  resetData,
+  selectOptions,
 } from "../../domain/userCard";
 
 import { IUser } from "../../types";
@@ -30,15 +33,6 @@ export const Card: React.FC<CardProps> = ({
   const [choosenSelect, setChooseSelect] =
     React.useState<SelectOptions>("name"); // Выбранный select
 
-  const selectOptions: SelectOptions[] = [
-    "name",
-    "surname",
-    "age",
-    "hobbies",
-    "work",
-    "phone",
-  ];
-
   const onChangeInputValue = (value: string) => {
     setEditUserData(
       changeInputValue(value, editUserData, usersData, choosenSelect)
@@ -46,24 +40,14 @@ export const Card: React.FC<CardProps> = ({
   };
 
   const onClickSaveData = () => {
-    fetch(
-      `https://63e27036ad0093bf29cff6e6.mockapi.io/Data/${editUserData.id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editUserData),
-      }
-    );
+    changeUserData(editUserData);
 
     setIsEditMode(false);
     setEditUserData(editUserData);
   };
 
   const onClickResetData = () => {
-    localStorage.setItem("UsersData", JSON.stringify(usersData));
-
+    resetData(usersData);
     setEditUserData(findUserData!);
   };
 

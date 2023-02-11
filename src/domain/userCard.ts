@@ -16,6 +16,15 @@ export type SelectOptions =
   | "work"
   | "phone";
 
+export const selectOptions: SelectOptions[] = [
+  "name",
+  "surname",
+  "age",
+  "hobbies",
+  "work",
+  "phone",
+];
+
 export const changeInputValue = (
   value: string,
   userData: IUser,
@@ -47,6 +56,20 @@ export const changeSelect = (value: string): SelectOptions => {
     value === "phone"
     ? value
     : "name";
+};
+
+export const changeUserData = (userData: IUser): void => {
+  fetch(`https://63e27036ad0093bf29cff6e6.mockapi.io/Data/${userData.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+};
+
+export const resetData = (usersData: IUser[]): void => {
+  localStorage.setItem("UsersData", JSON.stringify(usersData));
 };
 
 export const deleteCard = (userData: IUser, usersData: IUser[]): IUser[] => {

@@ -1,5 +1,7 @@
 import React from "react";
 import { Card } from "../Card";
+import { getUsersData } from "../../services/api";
+
 import { IUser } from "../../types";
 
 import styles from "./Main.module.css";
@@ -7,33 +9,25 @@ import styles from "./Main.module.css";
 export const Main: React.FC = () => {
   const [users, setUsers] = React.useState<IUser[]>([]);
 
-  const getUsersData = async () => {
-    const res = await fetch("https://63e27036ad0093bf29cff6e6.mockapi.io/Data");
-    const json: IUser[] = await res.json();
+  const getDataAndSave = () => {
+    getUsersData().then((data) => {
+      localStorage.setItem("UsersData", JSON.stringify(data));
 
-    const data = json.map((userData) => {
-      return {
-        ...userData,
-        id: Number(userData.id),
-      };
+      const usersDataJson = localStorage.getItem("UsersData");
+      const usersData: IUser[] =
+        usersDataJson !== null && JSON.parse(usersDataJson);
+
+      setUsers(usersData);
     });
-
-    localStorage.setItem("UsersData", JSON.stringify(data));
-
-    const usersDataJson = localStorage.getItem("UsersData");
-    const usersData: IUser[] =
-      usersDataJson !== null && JSON.parse(usersDataJson);
-
-    setUsers(usersData);
   };
 
   React.useEffect(() => {
-    getUsersData();
+    getDataAndSave();
   }, []);
 
   return (
     <div className={styles.main}>
-      <div className={styles.getDataBtn} onClick={() => getUsersData()}>
+      <div className={styles.getDataBtn} onClick={() => getDataAndSave()}>
         <button>Получить новые данные</button>
       </div>
       <div className={styles.usersCards}>
