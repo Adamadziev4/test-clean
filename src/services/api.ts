@@ -13,3 +13,19 @@ export const getUsersData = async () => {
 
   return data;
 };
+
+export const deleteUser = async (id: number) => {
+  fetch(`https://63e27036ad0093bf29cff6e6.mockapi.io/Data/${id}`, {
+    method: "DELETE",
+  });
+};
+
+export const updateUser = async (userData: IUser) => {
+  fetch(`https://63e27036ad0093bf29cff6e6.mockapi.io/Data/${userData.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+};

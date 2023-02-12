@@ -30,7 +30,7 @@ export const changeInputValue = (
   userData: IUser,
   usersData: IUser[],
   choosenSelect: SelectOptions
-): IUser => {
+) => {
   const newUserData = {
     ...userData,
     [choosenSelect]: choosenSelect === "hobbies" ? value.split(",") : value,
@@ -44,7 +44,7 @@ export const changeInputValue = (
 
   localStorage.setItem("UsersData", JSON.stringify(newUsersData));
 
-  return newUserData;
+  return { newUserData, newUsersData };
 };
 
 export const changeSelect = (value: string): SelectOptions => {
@@ -56,36 +56,4 @@ export const changeSelect = (value: string): SelectOptions => {
     value === "phone"
     ? value
     : "name";
-};
-
-export const changeUserData = (userData: IUser): void => {
-  fetch(`https://63e27036ad0093bf29cff6e6.mockapi.io/Data/${userData.id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
-};
-
-export const resetData = (usersData: IUser[]): void => {
-  localStorage.setItem("UsersData", JSON.stringify(usersData));
-};
-
-export const deleteCard = (userData: IUser, usersData: IUser[]): IUser[] => {
-  const deleteCard: boolean = window.confirm(
-    "Вы уверены, что хотите удалить публикацию?"
-  );
-
-  if (!deleteCard) return usersData;
-
-  fetch(`https://63e27036ad0093bf29cff6e6.mockapi.io/Data/${userData.id}`, {
-    method: "DELETE",
-  });
-
-  const newUsersData = usersData.filter((user) => user.id !== userData.id);
-
-  localStorage.setItem("UsersData", JSON.stringify(newUsersData));
-
-  return newUsersData;
 };

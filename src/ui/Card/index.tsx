@@ -1,14 +1,13 @@
 import React from "react";
+import { deleteCard, updateInputValue } from "../../application/updateUser";
 import {
-  changeInputValue,
   changeSelect,
-  changeUserData,
-  deleteCard,
-  resetData,
+  IUser,
+  SelectOptions,
   selectOptions,
 } from "../../domain/userCard";
-
-import { IUser } from "../../types";
+import { updateUser } from "../../services/api";
+import { updateUsersLC } from "../../services/operationsLC";
 
 import styles from "./Card.module.css";
 
@@ -17,8 +16,6 @@ type CardProps = {
   usersData: IUser[];
   setUsers: React.Dispatch<React.SetStateAction<IUser[]>>;
 };
-
-type SelectOptions = "name" | "surname" | "age" | "hobbies" | "work" | "phone";
 
 export const Card: React.FC<CardProps> = ({
   userData,
@@ -35,19 +32,19 @@ export const Card: React.FC<CardProps> = ({
 
   const onChangeInputValue = (value: string) => {
     setEditUserData(
-      changeInputValue(value, editUserData, usersData, choosenSelect)
+      updateInputValue(value, editUserData, usersData, choosenSelect)
     );
   };
 
   const onClickSaveData = () => {
-    changeUserData(editUserData);
+    updateUser(editUserData);
 
     setIsEditMode(false);
     setEditUserData(editUserData);
   };
 
   const onClickResetData = () => {
-    resetData(usersData);
+    updateUsersLC(usersData);
     setEditUserData(findUserData!);
   };
 

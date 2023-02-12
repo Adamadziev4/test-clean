@@ -1,8 +1,8 @@
 import React from "react";
 import { Card } from "../Card";
 import { getUsersData } from "../../services/api";
-
-import { IUser } from "../../types";
+import { IUser } from "../../domain/userCard";
+import { getUsersLC, updateUsersLC } from "../../services/operationsLC";
 
 import styles from "./Main.module.css";
 
@@ -11,12 +11,9 @@ export const Main: React.FC = () => {
 
   const getDataAndSave = () => {
     getUsersData().then((data) => {
-      localStorage.setItem("UsersData", JSON.stringify(data));
+      updateUsersLC(data);
 
-      const usersDataJson = localStorage.getItem("UsersData");
-      const usersData: IUser[] =
-        usersDataJson !== null && JSON.parse(usersDataJson);
-
+      const usersData = getUsersLC();
       setUsers(usersData);
     });
   };
