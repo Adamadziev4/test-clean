@@ -42,8 +42,6 @@ export const changeInputValue = (
     return newUserData;
   });
 
-  localStorage.setItem("UsersData", JSON.stringify(newUsersData));
-
   return { newUserData, newUsersData };
 };
 
