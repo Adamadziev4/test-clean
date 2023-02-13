@@ -5,26 +5,21 @@ import { IUser } from "../../domain/userCard";
 import { getUsersLC, updateUsersLC } from "../../services/operationsLC";
 
 import styles from "./Main.module.css";
+import { getDataAndSave } from "../../application/updateUser";
 
 export const Main: React.FC = () => {
   const [users, setUsers] = React.useState<IUser[]>([]);
 
-  const getDataAndSave = () => {
-    getUsersData().then((data) => {
-      updateUsersLC(data);
-
-      const usersData = getUsersLC();
-      setUsers(usersData);
-    });
-  };
-
   React.useEffect(() => {
-    getDataAndSave();
+    getDataAndSave().then((data) => setUsers(data));
   }, []);
 
   return (
     <div className={styles.main}>
-      <div className={styles.getDataBtn} onClick={() => getDataAndSave()}>
+      <div
+        className={styles.getDataBtn}
+        onClick={() => getDataAndSave().then((data) => setUsers(data))}
+      >
         <button>Получить новые данные</button>
       </div>
       <div className={styles.usersCards}>

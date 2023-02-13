@@ -1,6 +1,15 @@
 import { changeInputValue, IUser, SelectOptions } from "../domain/userCard";
-import { deleteUser } from "../services/api";
-import { updateUsersLC } from "../services/operationsLC";
+import { deleteUser, getUsersData } from "../services/api";
+import { getUsersLC, updateUsersLC } from "../services/operationsLC";
+
+export const getDataAndSave = async () => {
+  const data = await getUsersData();
+  updateUsersLC(data);
+
+  const usersData = getUsersLC();
+
+  return usersData;
+};
 
 export const updateInputValue = (
   value: string,
